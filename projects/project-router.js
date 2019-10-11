@@ -29,7 +29,25 @@ router.get('/', (req, res) => {
     });
 });
 
-// POST /api/projects endpoint for Adding projects -
+// GET /apd/projects/:id endpoint for Retrieving a project by ID -
+router.get('/:id', (req, res) => {
+  Projects.getProjectById(req.params.id)
+    .then(project => {
+      if (project) {
+        res.status(200).json(project);
+      } else {
+        res
+          .status(404)
+          .json({ message: 'Could not find project with given ID' });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ message: 'Failed to get project' });
+    });
+});
+
+// POST /api/projects endpoint for Adding projects - TESTED
 router.post('/', (req, res) => {
   const newProj = { ...req.body, completed: 0 };
   Projects.addProject(newProj)
@@ -41,6 +59,9 @@ router.post('/', (req, res) => {
       res.status(500).json({ message: 'Failed to create new project' });
     });
 });
+
+// POST /api/projects/:id/addTask endpoint for Adding task by project -
+router.post('/:id/addTask', (req, res) => {});
 
 /* ******************************************************************* */
 

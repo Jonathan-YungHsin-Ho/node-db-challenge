@@ -18,7 +18,7 @@ router.get('/', (req, res) => {
     });
 });
 
-// POST /api/resources endpoint for Adding resources -
+// POST /api/resources endpoint for Adding resources - TESTED
 router.post('/', (req, res) => {
   Resources.addResource(req.body)
     .then(resource => {

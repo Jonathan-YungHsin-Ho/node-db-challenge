@@ -28,9 +28,6 @@ router.get('/', (req, res) => {
     });
 });
 
-// POST /api/tasks endpoint for Adding tasks -
-router.post('/', (req, res) => {});
-
 /* ******************************************************************* */
 
 // Stretch Endpoints
