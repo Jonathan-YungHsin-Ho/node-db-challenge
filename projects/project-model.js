@@ -18,17 +18,14 @@ function getProjectById(id) {
     db('projects')
       .where({ id })
       .first(),
-    this.getProjectTasks(id),
-    this.getProjectResources(id),
+    getProjectTasks(id),
+    getProjectResources(id),
   ];
 
   return Promise.all(promises).then(results => {
     const [project, tasks, resources] = results;
 
-    project.tasks = tasks;
-    project.resources = resources;
-
-    return project;
+    return { ...project, tasks, resources };
   });
 }
 
