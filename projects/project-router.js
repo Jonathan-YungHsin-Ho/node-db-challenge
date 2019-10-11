@@ -81,8 +81,6 @@ router.get('/:id', (req, res) => {
         const updatedProject = {
           ...project,
           completed: project.completed === 1 ? true : false,
-          tasks: [],
-          resources: [],
         };
         res.status(200).json(updatedProject);
       } else {
