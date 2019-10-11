@@ -28,7 +28,7 @@ router.get('/', (req, res) => {
     });
 });
 
-// GET /api/tasks/:id endpoint for Retrieving a task by ID -
+// STRETCH - GET /api/tasks/:id endpoint for Retrieving a task by ID - TESTED
 router.get('/:id', (req, res) => {
   Tasks.getTaskById(req.params.id)
     .then(task => {
