@@ -29,12 +29,62 @@ router.get('/', (req, res) => {
     });
 });
 
-// GET /apd/projects/:id endpoint for Retrieving a project by ID - TESTED
+// STRETCH - GET /api/projects/:id/tasks for Retrieving tasks by project - TESTED
+router.get('/:id/tasks', (req, res) => {
+  Projects.getProjectTasks(req.params.id)
+    .then(tasks => {
+      if (tasks.length) {
+        const updatedTasks = tasks.map(task => {
+          if (task.completed === 0) {
+            task.completed = false;
+          } else if (task.completed === 1) {
+            task.completed = true;
+          }
+          return task;
+        });
+        res.status(200).json(updatedTasks);
+      } else {
+        res
+          .status(404)
+          .json({ message: 'Could not find tasks for given project' });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ message: 'Failed to get tasks' });
+    });
+});
+
+// STRETCH - GET /api/projects/:id/resources for Retrieving resources by project - TESTED
+router.get('/:id/resources', (req, res) => {
+  Projects.getProjectResources(req.params.id)
+    .then(resources => {
+      if (resources.length) {
+        res.status(200).json(resources);
+      } else {
+        res
+          .status(404)
+          .json({ message: 'Could not find resources for given project' });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ message: 'Failed to get resources' });
+    });
+});
+
+// STRETCH - GET /api/projects/:id endpoint for Retrieving a project by ID - TESTED
 router.get('/:id', (req, res) => {
   Projects.getProjectById(req.params.id)
     .then(project => {
       if (project) {
-        res.status(200).json(project);
+        const updatedProject = {
+          ...project,
+          completed: project.completed === 1 ? true : false,
+          tasks: [],
+          resources: [],
+        };
+        res.status(200).json(updatedProject);
       } else {
         res
           .status(404)
@@ -80,10 +130,6 @@ router.post('/:id/addTask', (req, res) => {
       res.status(500).json({ message: 'Failed to create new task' });
     });
 });
-
-/* ******************************************************************* */
-
-// Stretch Endpoints
 
 /* ******************************************************************* */
 
