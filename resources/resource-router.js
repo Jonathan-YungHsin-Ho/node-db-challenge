@@ -19,7 +19,16 @@ router.get('/', (req, res) => {
 });
 
 // POST /api/resources endpoint for Adding resources -
-router.post('/', (req, res) => {});
+router.post('/', (req, res) => {
+  Resources.addResource(req.body)
+    .then(resource => {
+      res.status(201).json(resource);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ message: 'Failed to create new resource' });
+    });
+});
 
 /* ******************************************************************* */
 
