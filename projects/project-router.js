@@ -29,7 +29,7 @@ router.get('/', (req, res) => {
     });
 });
 
-// GET /apd/projects/:id endpoint for Retrieving a project by ID -
+// GET /apd/projects/:id endpoint for Retrieving a project by ID - TESTED
 router.get('/:id', (req, res) => {
   Projects.getProjectById(req.params.id)
     .then(project => {
@@ -60,8 +60,26 @@ router.post('/', (req, res) => {
     });
 });
 
-// POST /api/projects/:id/addTask endpoint for Adding task by project -
-router.post('/:id/addTask', (req, res) => {});
+// POST /api/projects/:id/addTask endpoint for Adding task by project - TESTED
+router.post('/:id/addTask', (req, res) => {
+  Projects.getProjectById(req.params.id)
+    .then(project => {
+      if (project) {
+        const newTask = { ...req.body, completed: 0 };
+        Projects.addTask(newTask, req.params.id).then(task => {
+          res.status(201).json(task);
+        });
+      } else {
+        res
+          .status(404)
+          .json({ message: 'Could not fine project with given ID' });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ message: 'Failed to create new task' });
+    });
+});
 
 /* ******************************************************************* */
 

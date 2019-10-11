@@ -18,8 +18,13 @@ function getProjectById(id) {
 }
 
 function addProject(project) {
-  return db('projects').insert(project);
-  // .then(ids => getProjectById(ids[0]))
+  return db('projects')
+    .insert(project)
+    .then(ids => getProjectById(ids[0]));
 }
 
-function addTask(task, project_id) {}
+function addTask(task, project_id) {
+  return db('tasks')
+    .insert({ ...task, project_id })
+    .then(id => db('tasks').where({ id: id[0] }));
+}
